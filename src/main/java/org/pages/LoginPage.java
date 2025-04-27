@@ -2,6 +2,7 @@ package org.pages;
 
 import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
+import org.utils.ConfigReader;
 
 public class LoginPage extends BasePage{
 
@@ -11,9 +12,9 @@ public class LoginPage extends BasePage{
 
     public LoginPage(Page page) {
         super(page);
-        this.usernameInput = page.locator("#username");
-        this.passwordInput = page.locator("#password");
-        this.submitButton = page.locator("button[type='submit']");
+        this.usernameInput = page.locator("name='login[username]'");
+        this.passwordInput = page.locator("name='login[password]'");
+        this.submitButton = page.locator("//button/span[text()='Sign In']");
     }
 
     public void login(String username, String password) {
@@ -21,4 +22,12 @@ public class LoginPage extends BasePage{
         passwordInput.fill(password);
         submitButton.click();
     }
+
+    public void login() {
+        usernameInput.fill(ConfigReader.getProperty("username"));
+        passwordInput.fill(ConfigReader.getProperty("password"));
+        submitButton.click();
+    }
+
+
 }

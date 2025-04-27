@@ -2,6 +2,7 @@ package com.project.tests;
 
 import com.microsoft.playwright.*;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.pages.LoginPage;
@@ -9,7 +10,7 @@ import org.utils.ConfigReader;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class Login {
+public class Login{
     static Playwright playwright;
     static Browser browser;
     static BrowserContext context;
@@ -25,15 +26,15 @@ public class Login {
 
     @Test
     void testValidLogin() {
-        page.navigate("https://www.automationexercise.com");
+        String url = ConfigReader.getProperty("url");
+        page.navigate(url);
         LoginPage loginPage = new LoginPage(page);
-        //TODO add assertion for login page
-        //assertTrue();
-        //credentials masked in config.properties file
-        loginPage.login(ConfigReader.getProperty("username"), ConfigReader.getProperty("password"));
-
-        //TODO implement assertion
-        //assertTrue(page.title().contains(""));
+        loginPage.clickLoginPage();
+        Assertions.assertTrue(page.getByText("Customer Login").isVisible());
+        loginPage.login();
+        Assertions.assertTrue(page.getByText("My Account").isVisible());
+        //TODO add logger
+        System.out.println("successful login");
     }
 
     @AfterAll
